@@ -1,0 +1,97 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agent-api-platform
+  labels:
+    app: agent-api-platform
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: agent-api-platform
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: agent-api-platform
+    spec:
+      containers:
+      - name: agent-api-platform
+        image: agent-api-platform:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "3000"
+        - name: DB_HOST
+          valueFrom:
+            secretKeyRef:
+              name: agent-api-secrets
+              key: db-host
+        - name: DB_PORT
+          valueFrom:
+            secretKeyRef:
+              name: agent-api-secrets
+              key: db-port
+        - name: DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: agent-api-secrets
+              key: db-username
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: agent-api-secrets
+              key: db-password
+        - name: DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: agent-api-secrets
+              key: db-name
+        - name: REDIS_URL
+          valueFrom:
+            secretKeyRef:
+              name: agent-api-secrets
+              key: redis-url
+        - name: STRIPE_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: agent-api-secrets
+              key: stripe-secret-key
+        - name: API_KEY_SALT
+          valueFrom:
+            secretKeyRef:
+              name: agent-api-secrets
+              key: api-key-salt
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: agent-api-secrets
+              key: jwt-secret
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+          requests:
+            cpu: "200m"
+            memory: "256Mi"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+      restartPolicy: Always

@@ -1,0 +1,59 @@
+<svg width="800" height="500" viewBox="0 0 800 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Dashboard Background -->
+  <rect width="800" height="500" rx="8" fill="#F9FAFB" />
+  
+  <!-- Header -->
+  <rect y="0" width="800" height="60" rx="8 8 0 0" fill="#4F46E5" />
+  <circle cx="30" cy="30" r="15" fill="#22D3EE" />
+  <rect x="60" y="22" width="120" height="16" rx="4" fill="white" />
+  <rect x="600" y="22" width="80" height="16" rx="4" fill="white" opacity="0.7" />
+  <rect x="700" y="22" width="80" height="16" rx="4" fill="white" opacity="0.7" />
+  
+  <!-- Sidebar -->
+  <rect x="0" y="60" width="200" height="440" fill="#FFFFFF" />
+  <rect x="20" y="100" width="160" height="10" rx="2" fill="#E5E7EB" />
+  <rect x="20" y="130" width="160" height="10" rx="2" fill="#E5E7EB" />
+  <rect x="20" y="160" width="160" height="10" rx="2" fill="#E5E7EB" />
+  <rect x="20" y="190" width="160" height="10" rx="2" fill="#E5E7EB" />
+  <rect x="20" y="220" width="100" height="10" rx="2" fill="#4F46E5" />
+  
+  <!-- Main Content Area -->
+  <rect x="220" y="80" width="560" height="40" rx="4" fill="#FFFFFF" />
+  <rect x="240" y="95" width="240" height="10" rx="2" fill="#111827" />
+  <rect x="700" y="90" width="60" height="20" rx="4" fill="#4F46E5" />
+  
+  <!-- Stats Cards -->
+  <rect x="220" y="140" width="270" height="120" rx="8" fill="#FFFFFF" stroke="#E5E7EB" />
+  <rect x="240" y="160" width="100" height="10" rx="2" fill="#6B7280" />
+  <rect x="240" y="180" width="150" height="20" rx="2" fill="#111827" />
+  <rect x="240" y="210" width="200" height="30" rx="2" fill="#F3F4F6" />
+  
+  <rect x="510" y="140" width="270" height="120" rx="8" fill="#FFFFFF" stroke="#E5E7EB" />
+  <rect x="530" y="160" width="100" height="10" rx="2" fill="#6B7280" />
+  <rect x="530" y="180" width="150" height="20" rx="2" fill="#111827" />
+  <rect x="530" y="210" width="200" height="30" rx="2" fill="#F3F4F6" />
+  
+  <!-- Chart -->
+  <rect x="220" y="280" width="560" height="200" rx="8" fill="#FFFFFF" stroke="#E5E7EB" />
+  <rect x="240" y="300" width="150" height="15" rx="2" fill="#111827" />
+  
+  <!-- Chart Bars -->
+  <rect x="270" y="340" width="30" height="120" rx="2" fill="#4F46E5" opacity="0.2" />
+  <rect x="320" y="370" width="30" height="90" rx="2" fill="#4F46E5" opacity="0.4" />
+  <rect x="370" y="320" width="30" height="140" rx="2" fill="#4F46E5" opacity="0.6" />
+  <rect x="420" y="290" width="30" height="170" rx="2" fill="#4F46E5" opacity="0.8" />
+  <rect x="470" y="350" width="30" height="110" rx="2" fill="#4F46E5" />
+  <rect x="520" y="380" width="30" height="80" rx="2" fill="#4F46E5" opacity="0.9" />
+  <rect x="570" y="340" width="30" height="120" rx="2" fill="#4F46E5" opacity="0.7" />
+  <rect x="620" y="310" width="30" height="150" rx="2" fill="#4F46E5" opacity="0.5" />
+  <rect x="670" y="360" width="30" height="100" rx="2" fill="#4F46E5" opacity="0.3" />
+  
+  <!-- X-Axis -->
+  <rect x="240" y="460" width="520" height="1" fill="#E5E7EB" />
+  
+  <!-- Legend -->
+  <rect x="350" y="430" width="10" height="10" rx="2" fill="#4F46E5" />
+  <rect x="370" y="430" width="60" height="10" rx="2" fill="#6B7280" />
+  <rect x="450" y="430" width="10" height="10" rx="2" fill="#22D3EE" />
+  <rect x="470" y="430" width="60" height="10" rx="2" fill="#6B7280" />
+</svg>

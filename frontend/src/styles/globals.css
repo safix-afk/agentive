@@ -1,0 +1,120 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-white dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-200;
+  }
+
+  h1 {
+    @apply text-4xl font-bold text-gray-900 dark:text-white;
+  }
+
+  h2 {
+    @apply text-3xl font-bold text-gray-900 dark:text-white;
+  }
+
+  h3 {
+    @apply text-2xl font-bold text-gray-900 dark:text-white;
+  }
+
+  h4 {
+    @apply text-xl font-bold text-gray-900 dark:text-white;
+  }
+
+  p {
+    @apply text-gray-700 dark:text-gray-300;
+  }
+
+  a {
+    @apply text-primary-950 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 transition-all duration-200;
+  }
+
+  .card-hover {
+    @apply hover:shadow-lg hover:scale-[1.01] transition-all duration-200;
+  }
+
+  .input {
+    @apply w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg 
+           focus:outline-none focus:ring-2 focus:ring-primary-950 dark:focus:ring-primary-500 
+           bg-white dark:bg-gray-800 text-gray-900 dark:text-white;
+  }
+
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .badge-primary {
+    @apply bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200;
+  }
+
+  .badge-accent {
+    @apply bg-accent-100 dark:bg-accent-900 text-accent-800 dark:text-accent-200;
+  }
+  
+  .section {
+    @apply py-12 md:py-20;
+  }
+  
+  .container-custom {
+    @apply container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100 dark:bg-gray-800;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 dark:bg-gray-600 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400 dark:bg-gray-500;
+}
+
+/* Usage Dashboard Styles */
+.usage-bar {
+  @apply bg-primary-950 dark:bg-primary-400 rounded-t;
+  height: var(--bar-height);
+}
+
+.usage-progress-bar {
+  @apply bg-primary-950 dark:bg-primary-400 h-2 rounded-full;
+  width: var(--bar-width);
+}
+
+.error-progress-bar {
+  @apply bg-red-500 h-2 rounded-full;
+  width: var(--bar-width);
+}
+
+/* Animations */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
