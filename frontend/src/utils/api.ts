@@ -13,8 +13,8 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     // Get credentials from localStorage
-    const botId = localStorage.getItem('agentive_bot_id');
-    const apiKey = localStorage.getItem('agentive_api_key');
+    const botId = typeof window !== 'undefined' ? localStorage.getItem('agentive_bot_id') : '';
+    const apiKey = typeof window !== 'undefined' ? localStorage.getItem('agentive_api_key') : '';
     
     // Add auth headers if credentials exist
     if (botId && apiKey) {
@@ -23,7 +23,7 @@ api.interceptors.request.use(
     }
     
     // Check if sandbox mode is enabled
-    const sandboxMode = localStorage.getItem('agentive_sandbox_mode') === 'true';
+    const sandboxMode = typeof window !== 'undefined' ? localStorage.getItem('agentive_sandbox_mode') === 'true' : false;
     if (sandboxMode) {
       config.headers['X-Sandbox-Mode'] = 'true';
     }
@@ -47,8 +47,10 @@ api.interceptors.response.use(
       switch (error.response.status) {
         case 401:
           // Unauthorized - clear credentials
-          localStorage.removeItem('agentive_bot_id');
-          localStorage.removeItem('agentive_api_key');
+          if (typeof window !== 'undefined') {
+            localStorage.removeItem('agentive_bot_id');
+            localStorage.removeItem('agentive_api_key');
+          }
           break;
         case 429:
           // Rate limited
@@ -91,17 +93,37 @@ export const endpoints = {
 
 // Custom hooks for API operations
 export const useApiKey = () => {
-  const getBotId = () => localStorage.getItem('agentive_bot_id') || '';
-  const getApiKey = () => localStorage.getItem('agentive_api_key') || '';
-  
-  const setCredentials = (botId: string, apiKey: string) => {
-    localStorage.setItem('agentive_bot_id', botId);
-    localStorage.setItem('agentive_api_key', apiKey);
+  const getBotId = () => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('agentive_bot_id') || '';
+    }
+    return '';
   };
-  
+
+  const getApiKey = () => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('agentive_api_key') || '';
+    }
+    return '';
+  };
+
+  const setBotId = (botId: string) => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('agentive_bot_id', botId);
+    }
+  };
+
+  const setApiKey = (apiKey: string) => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('agentive_api_key', apiKey);
+    }
+  };
+
   const clearCredentials = () => {
-    localStorage.removeItem('agentive_bot_id');
-    localStorage.removeItem('agentive_api_key');
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('agentive_bot_id');
+      localStorage.removeItem('agentive_api_key');
+    }
   };
   
   const hasCredentials = () => {
@@ -111,7 +133,8 @@ export const useApiKey = () => {
   return {
     getBotId,
     getApiKey,
-    setCredentials,
+    setBotId,
+    setApiKey,
     clearCredentials,
     hasCredentials,
   };

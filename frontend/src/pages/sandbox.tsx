@@ -8,7 +8,7 @@ import ApiKeyForm from '../components/ApiKeyForm';
 import { useApiKey } from '../utils/api';
 
 const Sandbox: NextPage = () => {
-  const { setCredentials, hasCredentials, clearCredentials } = useApiKey();
+  const { setBotId, setApiKey, hasCredentials, clearCredentials } = useApiKey();
   const [sandboxMode, setSandboxMode] = useState(false);
   const [copied, setCopied] = useState<string | null>(null);
 
@@ -71,14 +71,28 @@ const Sandbox: NextPage = () => {
   const toggleSandboxMode = () => {
     const newMode = !sandboxMode;
     setSandboxMode(newMode);
-    localStorage.setItem('agentive_sandbox_mode', newMode.toString());
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('agentive_sandbox_mode', newMode.toString());
+    }
   };
 
   const enableSandbox = () => {
     // Set sandbox credentials and enable sandbox mode
-    setCredentials(sandboxCredentials.botId, sandboxCredentials.apiKey);
+    setBotId(sandboxCredentials.botId);
+    setApiKey(sandboxCredentials.apiKey);
     setSandboxMode(true);
-    localStorage.setItem('agentive_sandbox_mode', 'true');
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('agentive_sandbox_mode', 'true');
+    }
+  };
+
+  const disableSandbox = () => {
+    // Clear credentials and disable sandbox mode
+    clearCredentials();
+    setSandboxMode(false);
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('agentive_sandbox_mode');
+    }
   };
 
   const copyToClipboard = (text: string, id: string) => {
