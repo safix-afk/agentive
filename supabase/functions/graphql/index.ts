@@ -1,13 +1,27 @@
+import { ApolloServer } from 'apollo-server-micro';
+import { createClient } from '@supabase/supabase-js';
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts';
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.21.0';
+import { typeDefs } from './schema.ts';
+import { resolvers } from './resolvers.ts';
 import { corsHeaders } from '../_shared/cors.ts';
 import { verifyApiKey } from '../_shared/auth.ts';
-import { handlePurchase } from './purchase.ts';
-import { handleUsage } from './usage.ts';
-import { handleWebhooks } from './webhooks.ts';
-import { handleBot } from './bot.ts';
-import { handleAgent } from './agent.ts';
 
+// Create Apollo Server
+const apolloServer = new ApolloServer({
+  typeDefs,
+  resolvers,
+  introspection: true, // Enable introspection for GraphQL Playground
+});
+
+// Start the Apollo Server
+await apolloServer.start();
+
+// Create Supabase client
+const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? '';
+const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+const supabase = createClient(supabaseUrl, supabaseKey);
+
+// Handle GraphQL requests
 serve(async (req) => {
   // Handle CORS
   if (req.method === 'OPTIONS') {
@@ -15,19 +29,6 @@ serve(async (req) => {
   }
 
   try {
-    const url = new URL(req.url);
-    const path = url.pathname.split('/').filter(Boolean);
-    
-    // Skip 'api' in the path if present
-    const startIndex = path[0] === 'api' ? 1 : 0;
-    const resource = path[startIndex];
-    const method = req.method;
-    
-    // Create Supabase client
-    const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? '';
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
-    const supabase = createClient(supabaseUrl, supabaseKey);
-    
     // Check for sandbox mode
     const sandboxMode = req.headers.get('x-sandbox-mode') === 'true';
     
@@ -62,35 +63,33 @@ serve(async (req) => {
         usageToday: 0
       };
     }
-    
-    // Route to appropriate handler
-    let response;
-    switch (resource) {
-      case 'purchase-credits':
-        response = await handlePurchase(req, supabase, botInfo, sandboxMode);
-        break;
-      case 'usage':
-        response = await handleUsage(req, supabase, botInfo, sandboxMode);
-        break;
-      case 'webhooks':
-        response = await handleWebhooks(req, supabase, botInfo, sandboxMode);
-        break;
-      case 'bot':
-        response = await handleBot(req, supabase, botInfo, sandboxMode);
-        break;
-      case 'agent':
-        response = await handleAgent(req, supabase, botInfo, sandboxMode);
-        break;
-      default:
-        response = new Response(
-          JSON.stringify({ error: 'Resource not found' }),
-          { status: 404, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        );
-    }
-    
-    return response;
+
+    // Pass context to resolvers
+    const context = {
+      req,
+      botInfo,
+      sandboxMode,
+      supabase
+    };
+
+    // Handle GraphQL request
+    const { body, headers } = await apolloServer.executeOperation(
+      await req.json(),
+      { contextValue: context }
+    );
+
+    return new Response(
+      JSON.stringify(body),
+      {
+        headers: {
+          ...corsHeaders,
+          ...Object.fromEntries(headers),
+          'Content-Type': 'application/json'
+        }
+      }
+    );
   } catch (error) {
-    console.error('Error processing request:', error);
+    console.error('Error processing GraphQL request:', error);
     
     return new Response(
       JSON.stringify({ error: 'Internal server error', details: error.message }),

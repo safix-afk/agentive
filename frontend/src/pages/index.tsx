@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NextPage } from 'next';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -11,6 +11,16 @@ import demoTour from '../tours/demoTour';
 
 const Home: NextPage = () => {
   const [runTour, setRunTour] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+    const hasSeenTour = localStorage.getItem('hasSeenTour');
+    if (!hasSeenTour) {
+      setRunTour(true);
+      localStorage.setItem('hasSeenTour', 'true');
+    }
+  }, []);
 
   const handleJoyrideCallback = (data: CallBackProps) => {
     const { status } = data;
@@ -28,20 +38,22 @@ const Home: NextPage = () => {
       title="Agentive - Agent-First API Platform"
       description="Build intelligent applications with ease using Agentive, the agent-first API platform for developers."
     >
-      <Joyride
-        steps={demoTour}
-        run={runTour}
-        continuous
-        showSkipButton
-        showProgress
-        styles={{
-          options: {
-            primaryColor: '#4F46E5',
-            zIndex: 1000,
-          },
-        }}
-        callback={handleJoyrideCallback}
-      />
+      {isClient && (
+        <Joyride
+          steps={demoTour}
+          run={runTour}
+          continuous
+          showSkipButton
+          showProgress
+          styles={{
+            options: {
+              primaryColor: '#4F46E5',
+              zIndex: 1000,
+            },
+          }}
+          callback={handleJoyrideCallback}
+        />
+      )}
 
       {/* Hero Section */}
       <section className="bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 pt-16 pb-24">
@@ -62,6 +74,9 @@ const Home: NextPage = () => {
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button size="lg" onClick={startTour}>
                   Start Demo Tour
+                </Button>
+                <Button size="lg" variant="accent" onClick={() => setRunTour(true)}>
+                  Run Demo
                 </Button>
                 <Link href="/docs">
                   <Button variant="outline" size="lg">

@@ -1,0 +1,92 @@
+# Agentive GraphQL API Schema (SDL)
+# Auto-generated for documentation
+
+type Invoice {
+  id: ID!
+  botId: String!
+  amount: Float!
+  credits: Int!
+  status: String!
+  createdAt: String!
+}
+
+type UsageStats {
+  daily: [DailyUsage!]!
+  total: TotalUsage!
+}
+
+type DailyUsage {
+  date: String!
+  requests: Int!
+  tokens: Int!
+  credits: Int!
+}
+
+type TotalUsage {
+  requests: Int!
+  tokens: Int!
+  credits: Int!
+}
+
+type WebhookSubscription {
+  id: ID!
+  url: String!
+  events: [String!]!
+  createdAt: String!
+}
+
+type Bot {
+  id: ID!
+  name: String!
+  tier: String!
+  creditsRemaining: Int!
+  usageToday: Int!
+  createdAt: String!
+}
+
+type TransactionResponse {
+  success: Boolean!
+  transaction: Invoice
+  error: String
+}
+
+type UsageResponse {
+  success: Boolean!
+  usage: UsageStats
+  error: String
+}
+
+type WebhookResponse {
+  success: Boolean!
+  webhook: WebhookSubscription
+  error: String
+}
+
+type Query {
+  getBot(botId: String!): Bot
+  getUsage(botId: String!, period: String): UsageResponse
+  getWebhooks(botId: String!): [WebhookSubscription!]!
+}
+
+type Mutation {
+  purchaseCredits(input: PurchaseInput!): TransactionResponse
+  createWebhook(input: WebhookInput!): WebhookResponse
+  deleteWebhook(webhookId: String!): WebhookResponse
+  testWebhook(input: WebhookTestInput!): WebhookResponse
+}
+
+input PurchaseInput {
+  botId: String!
+  amount: Float!
+}
+
+input WebhookInput {
+  botId: String!
+  url: String!
+  events: [String!]!
+}
+
+input WebhookTestInput {
+  botId: String!
+  webhookId: String!
+}

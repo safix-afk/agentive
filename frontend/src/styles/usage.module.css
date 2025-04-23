@@ -1,0 +1,35 @@
+.usageBar {
+  height: var(--bar-height);
+  background-color: #3b82f6;
+  border-radius: 0.25rem;
+  width: 100%;
+  transition: height 0.3s ease;
+}
+
+:global(.dark) .usageBar {
+  background-color: #60a5fa;
+}
+
+.usageProgressBar {
+  width: var(--bar-width);
+  background-color: #3b82f6;
+  border-radius: 9999px;
+  height: 0.5rem;
+  transition: width 0.3s ease;
+}
+
+:global(.dark) .usageProgressBar {
+  background-color: #60a5fa;
+}
+
+.errorProgressBar {
+  width: var(--bar-width);
+  background-color: #ef4444;
+  border-radius: 9999px;
+  height: 0.5rem;
+  transition: width 0.3s ease;
+}
+
+:global(.dark) .errorProgressBar {
+  background-color: #f87171;
+}

@@ -7,6 +7,7 @@ import Card from '../components/Card';
 import Button from '../components/Button';
 import ApiKeyForm from '../components/ApiKeyForm';
 import { endpoints, useApiKey } from '../utils/api';
+import styles from '../styles/usage.module.css';
 
 interface UsageData {
   botId: string;
@@ -238,13 +239,13 @@ const Usage: NextPage = () => {
                           <div key={index} className="flex-1 flex flex-col items-center">
                             <div className="w-full px-1">
                               <div 
-                                className="usage-bar"
+                                className={styles.usageBar}
                                 style={{ 
-                                  '--bar-height': `${Math.max(
+                                  height: `${Math.max(
                                     (day.requestCount / Math.max(...getDailyUsageData())) * 100,
                                     5
                                   )}%` 
-                                } as React.CSSProperties}
+                                }}
                               ></div>
                             </div>
                             <div className="text-xs text-gray-500 dark:text-gray-400 mt-2">
@@ -279,12 +280,10 @@ const Usage: NextPage = () => {
                             </div>
                             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                               <div
-                                className="usage-progress-bar"
+                                className={styles.usageProgressBar}
                                 style={{
-                                  '--bar-width': `${
-                                    (count / usageData.usageStats.totalRequests) * 100
-                                  }%`
-                                } as React.CSSProperties}
+                                  width: `${(count / usageData.usageStats.totalRequests) * 100}%`
+                                }}
                               ></div>
                             </div>
                           </div>
@@ -310,12 +309,10 @@ const Usage: NextPage = () => {
                             </div>
                             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                               <div
-                                className="error-progress-bar"
+                                className={styles.errorProgressBar}
                                 style={{
-                                  '--bar-width': `${
-                                    (count / usageData.usageStats.errorCount) * 100
-                                  }%`
-                                } as React.CSSProperties}
+                                  width: `${(count / usageData.usageStats.errorCount) * 100}%`
+                                }}
                               ></div>
                             </div>
                           </div>
